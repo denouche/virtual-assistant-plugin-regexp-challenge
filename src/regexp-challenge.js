@@ -28,6 +28,10 @@ class RegexpChallenge extends AssistantFeature {
         ];
     }
 
+    static getDescription() {
+        return 'Lancer un challenge de regexp';
+    }
+
     static getTTL() {
         return 120 /* min */ * 60;
     }
