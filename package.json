@@ -1,7 +1,7 @@
 {
   "name": "virtual-assistant-plugin-regexp-challenge",
   "version": "0.2.2",
-  "description": "",
+  "description": "This plugin allow your chatbot to organize regexp challenges",
   "main": "index.js",
   "dependencies": {
     "fs-extra": "^1.0.0",
