@@ -85,20 +85,25 @@ class RegexpChallenge extends AssistantFeature {
 
     handle(message, context) {
         super.handle(message, context);
-        if(message.match(/(?:help|aide)/i) && this.canTriggerEvent('help')) {
-            this.help(context.userId);
+        if(this.current === 'none') {
+            this.startup();
         }
-        else if(message.match(/^(?:fin|end|exit|stop|quit|quitter|bye)$/i) && this.canTriggerEvent('end')) {
-            this.end(context.userId);
-        }
-        else if(this.canTriggerEvent('text')) {
-            this.text(message, context.userId);
-        }
-        else if('channel' === context.interfaceType && this.canTriggerEvent('channel')) {
-            this.channel(message, context.userId, context.channelId);
-        }
-        else if('im' === context.interfaceType && this.canTriggerEvent('im')) {
-            this.im(message, context.userId);
+        else {
+            if(message.match(/(?:help|aide)/i) && this.canTriggerEvent('help')) {
+                this.help(context.userId);
+            }
+            else if(message.match(/^(?:fin|end|exit|stop|quit|quitter|bye)$/i) && this.canTriggerEvent('end')) {
+                this.end(context.userId);
+            }
+            else if(this.canTriggerEvent('text')) {
+                this.text(message, context.userId);
+            }
+            else if('channel' === context.interfaceType && this.canTriggerEvent('channel')) {
+                this.channel(message, context.userId, context.channelId);
+            }
+            else if('im' === context.interfaceType && this.canTriggerEvent('im')) {
+                this.im(message, context.userId);
+            }
         }
     }
 
