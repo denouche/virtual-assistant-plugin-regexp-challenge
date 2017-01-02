@@ -1,0 +1,31 @@
+module.exports = {
+    mode: 'MATCH',
+    subject: "Le but de ce challenge est de matcher l'affectation d'une variable de type string dans un code Javascript\n",
+    game: [
+        { input: 'AZERTY="mastring"', output: true },
+        { input: "AZERTY='mastring'", output: true },
+        { input: "variable='quote ou double quote telle est la question\"", output: false },
+        { input: "variable=\"mais en tout cas ca doit etre coherent'", output: false },
+        { input: 'AZERTY=""', output: true },
+        { input: "AZERTY=''", output: true },
+        { input: 'AZERTY2="mastring"', output: true },
+        { input: 'aze2rty="mastring"', output: true },
+        { input: "3variable=''", output: false },
+        { input: 'ma_super_variable="la bien nommée"', output: true },
+        { input: '_="lodash"', output: true },
+        { input: '$="jquery"', output: true },
+        { input: '_cri_desespere$="youhouuu"', output: true },
+        { input: 'ma-super_variable="le mâle nommé"', output: false },
+        { input: 'email@domaine="email@domaine.com"', output: false },
+        { input: 'email="email@domaine.com"', output: true },
+        { input: "quotes_manquates=azerty", output: false },
+        { input: "quotes_manquates=", output: false },
+        { input: 'plus_dur="on échappe pas\\naux \\téchappement"', output: true },
+        { input: 'encore_plus_dur="Comme dirait l\'autre : \\"You shall not pass!\\""', output: true },
+        { input: 'moins_dur="Un PC sans Windows, c\'est comme un gateau au chocolat sans moutarde ..."oups', output: false },
+        { input: "viens_tasseoir='dans la cabane du pecheur''", output: false },
+        { input: "il_y_a='de la place pour \\'2\\''", output: true },
+        { input: 'et_ca_continue="Encore et""encore"', output: false },
+        { input: 'cest_que_le_debut="d\'accord, d\'accord\\"', output: false }
+    ]
+};
