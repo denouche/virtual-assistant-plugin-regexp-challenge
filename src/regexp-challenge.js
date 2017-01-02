@@ -229,9 +229,18 @@ class RegexpChallenge extends AssistantFeature {
     }
 
     getScoreBoard() {
-        var playersArray = this.getPlayersArray(),
-            topCount = (ConfigurationService.get('regexpchallenge.scoreboadSize') || 10) + _.filter(playersArray, 'win').length,
-            bestPlayersByScore = _.chain(playersArray)
+        let playersArray = this.getPlayersArray();
+            topCount = 10;
+        if(ConfigurationService.get('regexpchallenge.scoreboadSize') !== undefined
+            && ConfigurationService.get('regexpchallenge.scoreboadSize') !== null) {
+            if(ConfigurationService.get('regexpchallenge.scoreboadSize') > 0) {
+                topCount = ConfigurationService.get('regexpchallenge.scoreboadSize') + _.filter(playersArray, 'win').length;
+            }
+            else {
+                topCount = undefined;
+            }
+        }
+        let bestPlayersByScore = _.chain(playersArray)
             .orderBy(['win', 'bestScore'], ['asc', 'desc'])
             .slice(0, topCount)
             .value();
