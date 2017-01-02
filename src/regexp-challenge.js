@@ -285,7 +285,7 @@ class RegexpChallenge extends AssistantFeature {
             && 'U2Q4ALC6B' !== this.context.userId /* xee */ 
             && 'U0DHA6T5L' !== this.context.userId /* sfeirgroup*/
             && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
-            this.send('Désolé, seul un administrateur peut lancer un challenge.');
+            this.send('Désolé, seul un administrateur peut lancer un challenge public. Mais vous pouvez vous entrainer seul, pour cela venez me parler en message privé.');
             this.endAndClearCache();
         }
         else {
