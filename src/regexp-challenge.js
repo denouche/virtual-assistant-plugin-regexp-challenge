@@ -229,7 +229,7 @@ class RegexpChallenge extends AssistantFeature {
     }
 
     getScoreBoard() {
-        let playersArray = this.getPlayersArray();
+        let playersArray = this.getPlayersArray(),
             topCount = 10;
         if(ConfigurationService.get('regexpchallenge.scoreboadSize') !== undefined
             && ConfigurationService.get('regexpchallenge.scoreboadSize') !== null) {
