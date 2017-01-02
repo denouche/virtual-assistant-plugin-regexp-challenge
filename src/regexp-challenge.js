@@ -92,7 +92,7 @@ class RegexpChallenge extends AssistantFeature {
             if(message.match(/(?:help|aide)/i) && this.canTriggerEvent('help')) {
                 this.help(context.userId);
             }
-            else if(message.match(/^(?:fin|end|exit|stop|quit|quitter|bye)$/i) && this.canTriggerEvent('end')) {
+            else if(message.match(/(?:fin|end|exit|stop|quit|quitter|bye)/i) && this.canTriggerEvent('end')) {
                 this.end(context.userId);
             }
             else if(this.canTriggerEvent('text')) {
