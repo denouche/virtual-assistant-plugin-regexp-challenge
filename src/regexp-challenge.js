@@ -145,7 +145,7 @@ class RegexpChallenge extends AssistantFeature {
                 });
                 this.send(toSend);
                 this.send('Fin du challenge.');
-                this.endAndClearCache();
+                this.clearCache();
             }
         }
         return this.context.model.currentGame;
@@ -286,7 +286,7 @@ class RegexpChallenge extends AssistantFeature {
             && 'U0DHA6T5L' !== this.context.userId /* sfeirgroup*/
             && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
             this.send('Désolé, seul un administrateur peut lancer un challenge public. Mais vous pouvez vous entrainer seul, pour cela venez me parler en message privé.');
-            this.endAndClearCache();
+            this.clearCache();
         }
         else {
             this.send("C'est parti pour le Challenge Regex !");
@@ -447,7 +447,7 @@ class RegexpChallenge extends AssistantFeature {
             toSend.push("Personne n'a trouvé la bonne réponse ...");
         }
         this.send(toSend);
-        this.endAndClearCache();
+        this.clearCache();
     }
 
 }
