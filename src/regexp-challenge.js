@@ -14,12 +14,8 @@ const myRegexpAdvisor = new RegexAdvisor();
 
 class RegexpChallenge extends AssistantFeature {
 
-    static getId(interfaceType, channelOrImId) {
-        var id = 'RegexpChallenge-' + interfaceType + '-';
-        if(interfaceType === 'im') {
-            id += channelOrImId;
-        }
-        return id;
+    static getScope() {
+        return AssistantFeature.scopes.GLOBAL;
     }
 
     static getTriggerKeywords() {
@@ -88,7 +84,6 @@ class RegexpChallenge extends AssistantFeature {
 
 
     handle(message, context) {
-        super.handle(message, context);
         if(this.current === 'none') {
             this.startup();
         }
