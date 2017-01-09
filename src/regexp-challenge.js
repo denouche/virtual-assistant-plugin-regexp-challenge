@@ -277,8 +277,7 @@ class RegexpChallenge extends AssistantFeature {
         var fromUser = SlackService.getDataStore().getUserById(this.context.userId),
             imPlayerId = SlackService.getDataStore().getDMByUserId(this.context.userId).id;
         if(!fromUser.is_admin 
-            && 'U2Q4ALC6B' !== this.context.userId /* xee */ 
-            && 'U0DHA6T5L' !== this.context.userId /* sfeirgroup*/
+            && !this.interface.isAdministrator(this.context.userId)
             && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
             this.send('Désolé, seul un administrateur peut lancer un challenge public. Mais vous pouvez vous entrainer seul, pour cela venez me parler en message privé.');
             this.clearCache();
@@ -411,8 +410,7 @@ class RegexpChallenge extends AssistantFeature {
             var fromUser = SlackService.getDataStore().getUserById(fromUserId),
                 imPlayerId = SlackService.getDataStore().getDMByUserId(fromUserId).id;
             if(!fromUser.is_admin 
-                && 'U2Q4ALC6B' !== fromUserId /* xee */ 
-                && 'U0DHA6T5L' !== fromUserId /* sfeirgroup*/
+                && !this.interface.isAdministrator(this.context.userId)
                 && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
                 this.send('Désolé, seul un administrateur peut mettre fin au challenge.');
                 return false;
