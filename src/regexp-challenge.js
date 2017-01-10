@@ -1,10 +1,8 @@
 const AssistantFeature = require('virtual-assistant').AssistantFeature,
     ConfigurationService = require('virtual-assistant').ConfigurationService,
-    SlackService = require('virtual-assistant').SlackService,
     RegexAdvisor = require('./regexp-advisor'),
     StateMachine = require('javascript-state-machine'),
     _ = require('lodash'),
-    util = require('util'),
     vm = require('vm'),
     path = require('path'),
     fs = require('fs-extra');
@@ -73,12 +71,13 @@ class RegexpChallenge extends AssistantFeature {
         //        tries: 0, // number of tries
         //        win: 1
         //      }
-        //    }
+        //    },
+        //    currentGame: undefined
         //  }
         // }
         this.context.model = {
             players: {},
-            currenGame: undefined
+            currentGame: undefined
         };
     }
 
@@ -274,8 +273,8 @@ class RegexpChallenge extends AssistantFeature {
     /******** STATES *********/
 
     onInit(event, from, to) {
-        var fromUser = SlackService.getDataStore().getUserById(this.context.userId),
-            imPlayerId = SlackService.getDataStore().getDMByUserId(this.context.userId).id;
+        var fromUser = this.interface.getDataStore().getUserById(this.context.userId),
+            imPlayerId = this.interface.getDataStore().getDMByUserId(this.context.userId).id;
         if(!fromUser.is_admin 
             && !this.interface.isAdministrator(this.context.userId)
             && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
@@ -311,7 +310,7 @@ class RegexpChallenge extends AssistantFeature {
         console.log('BEGIN ###################################################');
         console.log('ANSWER', playerId, text);
         try {
-        var imPlayerId = SlackService.getDataStore().getDMByUserId(playerId).id;
+        var imPlayerId = this.interface.getDataStore().getDMByUserId(playerId).id;
         //TODO ICI on doit récupérer lID du DM à partir de lID du player
         //En attente de https://github.com/slackapi/node-slack-sdk/pull/264
         this.send('Vérifions ...', imPlayerId);
@@ -407,8 +406,8 @@ class RegexpChallenge extends AssistantFeature {
 
     onleaveWait(event, from, to, fromUserId) {
         if(event === 'end' && fromUserId) {
-            var fromUser = SlackService.getDataStore().getUserById(fromUserId),
-                imPlayerId = SlackService.getDataStore().getDMByUserId(fromUserId).id;
+            var fromUser = this.interface.getDataStore().getUserById(fromUserId),
+                imPlayerId = this.interface.getDataStore().getDMByUserId(fromUserId).id;
             if(!fromUser.is_admin 
                 && !this.interface.isAdministrator(this.context.userId)
                 && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
