@@ -1,4 +1,5 @@
-const AssistantFeature = require('virtual-assistant').AssistantFeature,
+const VirtualAssistant = require('virtual-assistant').VirtualAssistant,
+    AssistantFeature = require('virtual-assistant').AssistantFeature,
     ConfigurationService = require('virtual-assistant').ConfigurationService,
     RegexAdvisor = require('./regexp-advisor'),
     StateMachine = require('javascript-state-machine'),
@@ -13,7 +14,7 @@ const myRegexpAdvisor = new RegexAdvisor();
 class RegexpChallenge extends AssistantFeature {
 
     static getScope() {
-        return AssistantFeature.scopes.GLOBAL;
+        return AssistantFeature.scopes.SHARED;
     }
 
     static getTriggerKeywords() {
@@ -58,6 +59,23 @@ class RegexpChallenge extends AssistantFeature {
                 { name: 'end', from: '*', to: 'End' },
             ]
         });
+
+        let channelOrGroup = this.interface.getDataStore().getChannelById(this.context.channelId) || this.interface.getDataStore().getGroupById(this.context.channelId);
+        if(channelOrGroup) {
+            // Challenge was launched on a public channel or in a group
+            channelOrGroup.members.forEach((member) => {
+                this.interface.getDMIdByUserId(member)
+                    .then((imId) => {
+                        VirtualAssistant.getUsersCache().put(imId, this.id)
+                        this.send([
+                            `Bonjour, un Challenge Regex vient d'être lancé sur <#${channelOrGroup.id}|${channelOrGroup.name}>.`,
+                            "Vous avez rejoint le challenge. Pour le quitter dites 'fin'"
+                        ], imId);
+                    }, (err) => {
+                        // Do nothing, error
+                    });
+            });
+        }
 
         // context is : 
         // { 
@@ -311,8 +329,6 @@ class RegexpChallenge extends AssistantFeature {
         console.log('ANSWER', playerId, text);
         try {
         var imPlayerId = this.interface.getDataStore().getDMByUserId(playerId).id;
-        //TODO ICI on doit récupérer lID du DM à partir de lID du player
-        //En attente de https://github.com/slackapi/node-slack-sdk/pull/264
         this.send('Vérifions ...', imPlayerId);
 
         if(!this.context.model.players[playerId]) {
@@ -406,19 +422,20 @@ class RegexpChallenge extends AssistantFeature {
 
     onleaveWait(event, from, to, fromUserId) {
         if(event === 'end' && fromUserId) {
-            var fromUser = this.interface.getDataStore().getUserById(fromUserId),
+            let fromUser = this.interface.getDataStore().getUserById(fromUserId),
                 imPlayerId = this.interface.getDataStore().getDMByUserId(fromUserId).id;
             if(!fromUser.is_admin 
                 && !this.interface.isAdministrator(this.context.userId)
                 && imPlayerId !== this.context.channelId /* playing alone in training mode */) {
-                this.send('Désolé, seul un administrateur peut mettre fin au challenge.');
+                this.send('Vous quittez le challenge.', imPlayerId);
+                VirtualAssistant.getUsersCache().del(imPlayerId, this.id);
                 return false;
             }
         }
     }
 
     onEnd(event, from, to) {
-        var bestPlayersByScore = _.chain(this.getPlayersArray())
+        let bestPlayersByScore = _.chain(this.getPlayersArray())
                 .orderBy(['win', 'bestScore'], ['asc', 'desc'])
                 .value(),
             gameLength = this.getGame().game.length,
