@@ -13,10 +13,6 @@ const myRegexpAdvisor = new RegexAdvisor();
 
 class RegexpChallenge extends AssistantFeature {
 
-    static getScope() {
-        return AssistantFeature.scopes.SHARED;
-    }
-
     static getTriggerKeywords() {
         return [
             'regex', 'regexp'
