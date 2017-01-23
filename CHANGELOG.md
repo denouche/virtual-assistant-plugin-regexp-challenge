@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.1"></a>
+## [0.7.1](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.7.0...v0.7.1) (2017-01-23)
+
+
+### Bug Fixes
+
+* remove useless scope ([64ef2b8](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/64ef2b8))
+* to finish the game the word "stop" must be alone on the line, to avoid conflicts with the  game ([4a45c3b](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/4a45c3b))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.6.0...v0.7.0) (2017-01-21)
 
