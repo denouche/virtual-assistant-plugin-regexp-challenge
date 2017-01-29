@@ -1,6 +1,7 @@
 const VirtualAssistant = require('virtual-assistant').VirtualAssistant,
     AssistantFeature = require('virtual-assistant').AssistantFeature,
     ConfigurationService = require('virtual-assistant').ConfigurationService,
+    Statistics = require('virtual-assistant').StatisticsService,
     RegexAdvisor = require('./regexp-advisor'),
     StateMachine = require('javascript-state-machine'),
     _ = require('lodash'),
@@ -13,6 +14,10 @@ const myRegexpAdvisor = new RegexAdvisor();
 
 
 class RegexpChallenge extends AssistantFeature {
+
+    static init() {
+        Statistics.register('REGEXP_END');
+    }
 
     static getTriggerKeywords() {
         return [
@@ -70,12 +75,14 @@ class RegexpChallenge extends AssistantFeature {
         //        win: 1
         //      }
         //    },
-        //    currentGame: undefined
+        //    currentGame: undefined,
+        //    currentGameName: undefined
         //  }
         // }
         this.context.model = {
             players: {},
-            currentGame: undefined
+            currentGame: undefined,
+            currentGameName: undefined
         };
     }
 
@@ -120,8 +127,10 @@ class RegexpChallenge extends AssistantFeature {
             ]
         }*/
         if(!this.context.model.currentGame) {
-            var gameName = ConfigurationService.get('regexpchallenge.game');
-            this.context.model.currentGame = undefined;
+            if(!this.context.model.currentGameName) {
+                this.context.model.currentGameName = ConfigurationService.get('regexpchallenge.game');
+            }
+            let gameName = this.context.model.currentGameName;
             try {
                 this.context.model.currentGame = require(`./challenges/${gameName}.js`);
             } catch(e) {
@@ -376,6 +385,7 @@ class RegexpChallenge extends AssistantFeature {
                         // Game was launched in private mode, by the current user.
                         // He won, finish the game
                         this.end();
+                        return;
                     }
                 }
                 else {
@@ -451,7 +461,21 @@ class RegexpChallenge extends AssistantFeature {
             gameLength = this.getGame().game.length,
             toSend = [
                 'Challenge terminé !'
-            ];
+            ],
+            winnerCount = _.filter(bestPlayersByScore, function(e) {
+                return e.win !== undefined;
+            }),
+            launchedByImPlayerId = this.interface.getDataStore().getDMByUserId(this.context.userId).id;
+
+        Statistics.event(Statistics.events.REGEXP_END, {
+            challengeId: this.id,
+            game: this.context.model.currentGameName,
+            userId: this.context.userId,
+            winnersCount: winnerCount.length,
+            playersCount: bestPlayersByScore.length,
+            privateChallenge: (launchedByImPlayerId === this.context.channelId)
+        });
+
         if(bestPlayersByScore.length > 0) {
             _.forEach(bestPlayersByScore, function(player) {
                 if(player.win !== undefined) {
