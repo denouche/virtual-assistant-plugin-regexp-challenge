@@ -1,5 +1,4 @@
 module.exports = {
-    // New
     mode: 'MATCH',
     subject: `Le but de ce challenge est de matcher l'heure, au format 24h et au format 12h.`,
     game: [
