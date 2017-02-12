@@ -5,7 +5,6 @@ const VirtualAssistant = require('virtual-assistant').VirtualAssistant,
     RegexAdvisor = require('./regexp-advisor'),
     StateMachine = require('javascript-state-machine'),
     _ = require('lodash'),
-    debug = require('debug')('virtual-assistant-plugin-regex-challenge:feature:regexp'),
     vm = require('vm'),
     path = require('path'),
     fs = require('fs-extra');
@@ -16,6 +15,7 @@ const myRegexpAdvisor = new RegexAdvisor();
 class RegexpChallenge extends AssistantFeature {
 
     static init() {
+        super.init();
         Statistics.register('REGEXP_END');
     }
 
@@ -40,8 +40,8 @@ class RegexpChallenge extends AssistantFeature {
         StateMachine.create({
             target: RegexpChallenge.prototype,
             error: function(eventName, from, to, args, errorCode, errorMessage) {
-                debug('Uncatched error',  'event ' + eventName + ' was naughty :- ' + errorMessage);
-                debug(args);
+                this.debug('Uncatched error',  'event ' + eventName + ' was naughty :- ' + errorMessage);
+                this.debug(args);
             },
             initial: { state: 'Init', event: 'startup', defer: true }, // defer is important since the startup event is launched after the fsm is stored in cache
             terminal: 'End',
@@ -92,10 +92,10 @@ class RegexpChallenge extends AssistantFeature {
             this.startup();
         }
         else {
-            if(message.match(/(?:help|aide)/i) && this.canTriggerEvent('help')) {
+            if(message.match(/\b(?:help|aide)\b/i) && this.canTriggerEvent('help')) {
                 this.help(context.userId);
             }
-            else if(message.match(/^(?:fin|end|exit|stop|quit|quitter|bye)$/i) && this.canTriggerEvent('end')) {
+            else if(message.match(/\b(?:fin|end|exit|stop|quit|quitter|bye)\b/i) && this.canTriggerEvent('end')) {
                 this.end(context.userId);
             }
             else if(this.canTriggerEvent('text')) {
@@ -134,7 +134,7 @@ class RegexpChallenge extends AssistantFeature {
             try {
                 this.context.model.currentGame = require(`./challenges/${gameName}.js`);
             } catch(e) {
-                debug(`Error while loading regexp game ${gameName}`);
+                this.debug(`Error while loading regexp game ${gameName}`, e);
                 let toSend = [`Une erreur est survenue, le jeu à charger *${gameName}* n'existe pas.`];
                 let files = fs.walkSync(path.join(__dirname, 'challenges'));
                 toSend.push("Pour configurer le challenge en cours, utilisez le mode configuration et affectez l'une des valeurs suivantes à la propriété `regexpchallenge.game` :");
@@ -343,8 +343,8 @@ class RegexpChallenge extends AssistantFeature {
     }
 
     onAnswer(event, from, to, text, playerId) {
-        debug('BEGIN ###################################################');
-        debug('ANSWER', playerId, text);
+        this.debug('BEGIN ###################################################');
+        this.debug('ANSWER', playerId, text);
         try {
         var imPlayerId = this.interface.getDataStore().getDMByUserId(playerId).id;
         this.send('Vérifions ...', imPlayerId);
@@ -359,7 +359,7 @@ class RegexpChallenge extends AssistantFeature {
             this.send('Vous avez déjà gagné ! Retournez travailler !', imPlayerId);
         }
         else {
-            debug('onAnswer', 'testTEXT', text);
+            this.debug('onAnswer', 'testTEXT', text);
             if(text) {
                 this.context.model.players[playerId].tries++;
                 var gameToDisplay = this.getGameToDisplay(text);
@@ -431,11 +431,11 @@ class RegexpChallenge extends AssistantFeature {
         }
         }
         catch(e) {
-            debug('------------------------------------------')
-            debug('onAnswer error', e);
-            debug('------------------------------------------')
+            this.debug('------------------------------------------')
+            this.debug('onAnswer error', e);
+            this.debug('------------------------------------------')
         }
-        debug('END ###################################################');
+        this.debug('END ###################################################');
         this.wait();
     }
 
