@@ -1,7 +1,7 @@
 let subject = `Nous allons maintenant découvrir les "classes de caractères".
 Les classes de caractères permettent de définir en quelque sorte un "OU".
 Elles sont délimitées par des crochets dans lesquels se trouvent les caractères faisant parti du OU.
-Ainsi la regexp \`m[oai]ts\` est beaucoup plus succinte que \`mots|mats|mits\`, et sélectionne les mêmes mots.
+Ainsi la regexp \`m[oai]ts\` est beaucoup plus succinte que \`(mots|mats|mits)\`, et sélectionne les mêmes mots.
 
 Enfin, gros avantage des classes de caractères, elles permettent de donner un intervalle de caractères.
 Pour dire "n'importe quelle lettre", au lieu d'écrire \`m[abcdefghijklmnopqrstuvwxyz]ts\` on peut ainsi écrire \`m[a-z]ts\`.
