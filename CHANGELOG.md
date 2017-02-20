@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.8.0...v0.9.0) (2017-02-20)
+
+
+### Bug Fixes
+
+* fix char class challenge ([7d54c40](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/7d54c40))
+* use embedded debug function ([de81b94](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/de81b94))
+
+
+### Features
+
+* add escape tutorial challenge ([9410187](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/9410187))
+* add or tutorial challenge ([2f3f032](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/2f3f032))
+* add quantifier tutorial challenge ([24a6a77](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/24a6a77))
+* allow users to choose the challenge ([f815f37](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/f815f37))
+* rework all challenges by level, add tutorials ([8fcc153](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/8fcc153))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.7.4...v0.8.0) (2017-01-29)
 
