@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.1"></a>
+## [0.9.1](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.9.0...v0.9.1) (2017-02-20)
+
+
+### Bug Fixes
+
+* do not crash on no existant challenge ([2399a49](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/2399a49))
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.8.0...v0.9.0) (2017-02-20)
 
