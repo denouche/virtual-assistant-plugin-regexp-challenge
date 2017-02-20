@@ -315,10 +315,18 @@ class RegexpChallenge extends AssistantFeature {
         }
     }
 
-    onChallengeChosen(event, from, to, text) {
-        let chosenGame = text.trim();
-        this.context.model.currentGameName = chosenGame;
+    onleaveInit(event, from, to, text) {
+        let gameName = text.trim();
+        try {
+            require(`./challenges/${gameName}.js`); // try to load the given game
+            this.context.model.currentGameName = gameName;
+        } catch(e) {
+            this.send(`Une erreur est survenue, le jeu à charger *${gameName}* n'existe pas.`);
+            return false;
+        }
+    }
 
+    onChallengeChosen(event, from, to) {
         let channelOrGroup = this.interface.getDataStore().getChannelById(this.context.channelId) || this.interface.getDataStore().getGroupById(this.context.channelId);
         if(channelOrGroup) {
             // Challenge was launched on a public channel or in a group
