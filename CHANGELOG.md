@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.9.1...v0.10.0) (2017-05-12)
+
+
+### Features
+
+* add database uri challenge ([f2dfe00](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/commit/f2dfe00))
+
+
+
 <a name="0.9.1"></a>
 ## [0.9.1](https://github.com/denouche/virtual-assistant-plugin-regexp-challenge/compare/v0.9.0...v0.9.1) (2017-02-20)
 
