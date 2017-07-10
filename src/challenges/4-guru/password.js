@@ -5,6 +5,7 @@ module.exports = {
                 + "- contient au moins une lettre majuscule\n"
                 + "- contient au moins un chiffre\n"
                 + "- contient au moins un caractère spécial (autre que lettre ou chiffre)\n"
+                + "- contient au moins 8 caractères\n"
                 + "- dans n'importe quel ordre\n",
     game: [
         { input: 'aaaaaaaaaa', output: false },
